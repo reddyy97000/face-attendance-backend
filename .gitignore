@@ -5,4 +5,5 @@ data/
 .vscode/
 .env
 .env.*
+!.env.example
 .DS_Store
