@@ -1,0 +1,41 @@
+# ─────────────────────────────────────────────────────────────
+# docker compose up --build
+# Spins up MySQL + the Spring Boot backend.
+# Set env vars in a .env file (copy .env.example → .env).
+# ─────────────────────────────────────────────────────────────
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-changeme}
+      MYSQL_DATABASE: face_attendance
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    build: .
+    ports:
+      - "${PORT:-8081}:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_URL=jdbc:mysql://db:3306/face_attendance?useSSL=false&allowPublicKeyRetrieval=true
+      - DB_USERNAME=root
+      - DB_PASSWORD=${DB_PASSWORD:-changeme}
+      # First run? Set DDL_AUTO=update to create tables, then remove it.
+      - DDL_AUTO=${DDL_AUTO:-validate}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost:8080}
+      - API_KEY=${API_KEY:-}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
