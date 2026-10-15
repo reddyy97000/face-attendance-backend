@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: face-attendance-backend
+    env: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: CORS_ORIGINS
+        value: https://ss-agency-attendence.vercel.app
+      - key: DDL_AUTO
+        value: update
+      - key: FACE_THRESHOLD
+        value: "0.70"
