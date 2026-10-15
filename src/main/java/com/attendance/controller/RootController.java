@@ -144,7 +144,7 @@ public class RootController {
                     <p>
                         This is the Spring Boot & OpenCV backend REST API. The frontend user interface is hosted and live on Vercel.
                     </p>
-                    <a href="%s" class="btn">Open Web Application &rarr;</a>
+                    <a href="https://ss-agency-attendence.vercel.app" class="btn">Open Web Application &rarr;</a>
                     <div class="endpoints">
                         <h2>Available API Endpoints</h2>
                         <div class="endpoint-list">
@@ -157,7 +157,7 @@ public class RootController {
                 </div>
             </body>
             </html>
-            """.formatted(FRONTEND_URL);
+            """;
     }
 
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
